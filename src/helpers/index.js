@@ -2,8 +2,6 @@ import React from 'react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 
 export function renderRoutes(routes, extraProps = {}, switchProps = {}) {
-
-  console.log('routes : ', routes);
   return React.createElement(Switch, switchProps, routes.map((route, i) => (
     React.createElement(Route, {
       key: route.key || i,

@@ -9,6 +9,7 @@ class Menu extends React.Component{
         <ul>
           <li className={css.item}><Link to="/webgl">WebGL 01</Link></li>
           <li className={css.item}><Link to="/webgl02">WebGL 02</Link></li>
+          <li className={css.item}><Link to="/webgl03">WebGL 03</Link></li>
         </ul>
       </div>
     )
