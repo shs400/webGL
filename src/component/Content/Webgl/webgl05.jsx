@@ -137,7 +137,7 @@ class Webgl05 extends React.Component{
   render() {
     return (
       <div>
-        <h2>Webgl04 {this.props.match.params.name}</h2>
+        <h2>Webgl05 {this.props.match.params.name}</h2>
         <canvas
           id="my-canvas"
           width="400"
