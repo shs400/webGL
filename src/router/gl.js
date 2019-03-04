@@ -19,7 +19,8 @@ export function shader(type, text) {
 export function setupWebGL(gl) {
   // 클리어 색상을 녹색으로 설정
   gl.clearColor(0, 0, 0, 1.0);
-  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 }
 
