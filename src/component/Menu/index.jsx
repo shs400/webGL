@@ -14,6 +14,8 @@ class Menu extends React.Component{
           <li className={css.item}><Link to="/webgl05">WebGL 05</Link></li>
           <li className={css.item}><Link to="/webgl06">WebGL 06</Link></li>
           <li className={css.item}><Link to="/webgl07">WebGL 07</Link></li>
+          <li className={css.item}><Link to="/webgl08">WebGL 08</Link></li>
+          <li className={css.item}><Link to="/webgl09">WebGL 09</Link></li>
         </ul>
       </div>
     )

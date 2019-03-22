@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { shader, setupWebGL, makeShader } from '../../../router/gl.js'
+import { shader, makeShader } from '../../../router/gl.js'
 
 class Webgl07 extends React.Component{
   constructor(props) {
@@ -15,13 +15,7 @@ class Webgl07 extends React.Component{
     this.fragmentShader = null,
     this.vertexShader = null,
     this.trianglesVerticeBuffer = null,
-    this.vertexPositionAttribute = null,
-
-    this.positionAttributeLocation = null,
-    this.resolutionUniformLocation = null,
-    this.colorUniformLocation = null,
-    this.matrixUniformLocation = null,
-    this.triangleVerticeBuffer = null;
+    this.vertexPositionAttribute = null
   }
 
   componentDidMount() {
@@ -40,7 +34,7 @@ class Webgl07 extends React.Component{
       uniform sampler2D uSampler;
     
       void main(void) {
-        gl_FragColor = texture2D( uSampler, vec2(vTextureCoord.s, vTextureCoord.t) );
+        gl_FragColor = texture2D( uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
       }`;
 
     shader('vertex', vertxtText);
@@ -68,8 +62,8 @@ class Webgl07 extends React.Component{
       this.loadTexture(this.gl);
       let _this = this;
       this.textureImage.onload = function() {
-        _this.setupTexture(_this.gl)
-        setupWebGL(_this.gl);
+        _this.setupTexture(_this.gl);
+        _this.setupWebGL(_this.gl);
         _this.drawScene(_this.gl);
       }
     } else {
@@ -82,17 +76,28 @@ class Webgl07 extends React.Component{
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.textureImage);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); // 확대 default : LINEAR
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); // 축소 default : NEAREST_MIPMAP_LINEAR
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.MIRRORED_REPEAT);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT);
+    gl.generateMipmap(gl.TEXTURE_2D);
 
     this.glProgram.samplerUniform = gl.getUniformLocation(this.glProgram, "uSampler");
     gl.uniform1i(this.glProgram.samplerUniform, 0);
+    if(!gl.isTexture(this.texture)) {
+      console.error("Error: Texture is invalid");
+    }
   }
 
-  loadTexture = (gl) => {
+  loadTexture = () => {
     this.textureImage = new Image();
+    // this.textureImage.src = 'stone-128px.3a5b9013.png';
     // this.textureImage.src = 'smiley-128px.8c4ef643.png';
-    this.textureImage.src = 'stone-128px.3a5b9013.png';
+    // this.textureImage.src = 'smiley-64px.e683217a.png';
+    // this.textureImage.src = 'dog-128px.46019bb9.jpg';
+    // this.textureImage.src = 'texture.8a8cf449.jpg';
+    this.textureImage.src = 'texture-64px.2d3e6cbb.png';
   }
 
   initShader = (gl) => {
@@ -115,6 +120,14 @@ class Webgl07 extends React.Component{
     }
     // 프로그램을 사용
     gl.useProgram(this.glProgram);  // WebGL이 이 프로그램을 사용가능하게함
+  }
+
+  setupWebGL = (gl) => {
+    // 클리어 색상을 녹색으로 설정
+    gl.clearColor(0, 0, 0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.DEPTH_TEST);
+    gl.viewport(0, 0, 400, 400);
   }
 
   setupBuffers = (gl) => {
@@ -146,7 +159,7 @@ class Webgl07 extends React.Component{
     return (
       <div>
         <h2>Webgl07 {this.props.match.params.name}</h2>
-        <canvas id="my-canvas" width="400" height="300">
+        <canvas id="my-canvas" width="400" height="400">
           your browser does not support the HTML5 canvas element.
         </canvas>
       </div>
